@@ -136,7 +136,6 @@ int main(void)
 
   /* USER CODE END 1 */
 
-  /* MCU Configuration--------------------------------------------------------*/
 
   /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
   HAL_Init();
@@ -169,7 +168,7 @@ int main(void)
   Light_Set(0);
   /* USER CODE END 2 */
 
-  /* Create the mutex(es) */
+  /* Create the mutex */
   /* definition and creation of lcdMutex */
   osMutexDef(lcdMutex);
   lcdMutexHandle = osMutexCreate(osMutex(lcdMutex));
@@ -178,62 +177,54 @@ int main(void)
   /* add mutexes, ... */
   /* USER CODE END RTOS_MUTEX */
 
-  /* Create the semaphores(s) */
+  /* Create the semaphores */
   /* definition and creation of ButtonSemaphore */
   osSemaphoreDef(ButtonSemaphore);
   ButtonSemaphoreHandle = osSemaphoreCreate(osSemaphore(ButtonSemaphore), 1);
 
-  /* definition and creation of MotionSemaphore */
+  /* MotionSemaphore */
   osSemaphoreDef(MotionSemaphore);
   MotionSemaphoreHandle = osSemaphoreCreate(osSemaphore(MotionSemaphore), 1);
 
-  /* USER CODE BEGIN RTOS_SEMAPHORES */
-  /* add semaphores, ... */
-  /* USER CODE END RTOS_SEMAPHORES */
-
-  /* Create the timer(s) */
+  /* Create the timer */
   /* definition and creation of LightTimer */
   osTimerDef(LightTimer, Callback01);
   LightTimerHandle = osTimerCreate(osTimer(LightTimer), osTimerOnce, NULL);
 
   /* USER CODE BEGIN RTOS_TIMERS */
-  /* start timers, add new ones, ... */
   /* USER CODE END RTOS_TIMERS */
 
-  /* Create the queue(s) */
+  /* Create the queue */
   /* definition and creation of SensorQueue */
   osMessageQDef(SensorQueue, 8, uint32_t);
   SensorQueueHandle = osMessageCreate(osMessageQ(SensorQueue), NULL);
 
   /* USER CODE BEGIN RTOS_QUEUES */
-  /* add queues, ... */
   /* USER CODE END RTOS_QUEUES */
 
-  /* Create the thread(s) */
-  /* definition and creation of SensorTask */
+  /* Create the threads */
+  /* SensorTask */
   osThreadDef(SensorTask, StartSensorTask, osPriorityNormal, 0, 256);
   SensorTaskHandle = osThreadCreate(osThread(SensorTask), NULL);
 
-  /* definition and creation of DisplayTask */
+  /* DisplayTask */
   osThreadDef(DisplayTask, StartDisplayTask, osPriorityBelowNormal, 0, 256);
   DisplayTaskHandle = osThreadCreate(osThread(DisplayTask), NULL);
 
-  /* definition and creation of ControlTask */
+  /* ControlTask */
   osThreadDef(ControlTask, StartControlTask, osPriorityAboveNormal, 0, 256);
   ControlTaskHandle = osThreadCreate(osThread(ControlTask), NULL);
 
-  /* definition and creation of ButtonTask */
+  /* ButtonTask */
   osThreadDef(ButtonTask, StartButtonTask, osPriorityNormal, 0, 128);
   ButtonTaskHandle = osThreadCreate(osThread(ButtonTask), NULL);
 
   /* USER CODE BEGIN RTOS_THREADS */
-  /* add threads, ... */
   /* USER CODE END RTOS_THREADS */
 
   /* Start scheduler */
   osKernelStart();
 
-  /* We should never get here as control is now taken by the scheduler */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
@@ -566,7 +557,7 @@ static void Light_Set(uint8_t on)
   HAL_GPIO_WritePin(GPIOB, GPIO_PIN_0, on ? GPIO_PIN_SET : GPIO_PIN_RESET);
 }
 
-/* ---------- LCD functions ---------- */
+/* LCD functions */
 
 static void LCD_EnablePulse(void)
 {
@@ -645,7 +636,7 @@ static void LCD_SendString(char *str)
 }
 /* USER CODE END 4 */
 
-/* USER CODE BEGIN Header_StartSensorTask */
+/* USER CODE BEGIN */
 /**
   * @brief  Function implementing the SensorTask thread.
   * @param  argument: Not used
